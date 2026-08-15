@@ -1,4 +1,4 @@
-# Continuous Scroll
+# VSCode Continuous Scroll
 
 Makes separate open tabs feel like one continuous document. Scroll past the
 bottom of a file and it jumps you into the top of the next tab. Scroll back
