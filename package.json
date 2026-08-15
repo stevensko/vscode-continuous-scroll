@@ -1,0 +1,58 @@
+{
+  "name": "infinity-scroll",
+  "displayName": "Infinity Scroll",
+  "description": "Scroll past the bottom of a file to jump into the next open tab, and past the top to jump back into the previous one - makes separate files feel like one continuous document.",
+  "version": "0.0.1",
+  "publisher": "local-dev",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "infinityScroll.toggle",
+        "title": "Infinity Scroll: Toggle On/Off"
+      }
+    ],
+    "configuration": {
+      "title": "Infinity Scroll",
+      "properties": {
+        "infinityScroll.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable jumping to the next/previous tab when scrolling past the bottom/top of a file."
+        },
+        "infinityScroll.wrapAround": {
+          "type": "boolean",
+          "default": false,
+          "description": "When at the last tab and scrolling past the bottom, wrap around to the first tab (and vice versa)."
+        },
+        "infinityScroll.triggerDelayMs": {
+          "type": "number",
+          "default": 400,
+          "minimum": 0,
+          "description": "How long (in milliseconds) you must stay scrolled at the top/bottom edge before it switches tabs. Higher values make it feel less jarring - a quick flick past the edge won't trigger it, but pausing or continuing to scroll there will. Set to 0 to switch instantly (old behavior)."
+        },
+        "infinityScroll.edgeBufferLines": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Extra blank lines you must scroll past the END of a file before the switch-to-next-tab countdown starts. Requires \"editor.scrollBeyondLastLine\" to be enabled, since that's what creates the blank space to scroll into. Only affects the bottom edge (going to the next tab) - there's no equivalent blank space above the first line, so the top edge uses triggerDelayMs alone."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.32.0"
+  }
+}
