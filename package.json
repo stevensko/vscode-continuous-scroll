@@ -1,0 +1,56 @@
+{
+  "name": "infinity-scroll",
+  "displayName": "Infinity Scroll",
+  "description": "Scroll past the bottom of a file to jump into the next open tab, and past the top to jump back into the previous one - makes separate files feel like one continuous document.",
+  "version": "0.1.0",
+  "publisher": "local-dev",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "infinityScroll.toggle",
+        "title": "Infinity Scroll: Toggle On/Off"
+      },
+      {
+        "command": "infinityScroll.showDebugLog",
+        "title": "Infinity Scroll: Show Debug Log"
+      }
+    ],
+    "configuration": {
+      "title": "Infinity Scroll",
+      "properties": {
+        "infinityScroll.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable jumping to the next/previous tab when scrolling past the bottom/top of a file."
+        },
+        "infinityScroll.wrapAround": {
+          "type": "boolean",
+          "default": false,
+          "description": "When at the last tab and scrolling past the bottom, wrap around to the first tab (and vice versa)."
+        },
+        "infinityScroll.triggerDelayMs": {
+          "type": "number",
+          "default": 500,
+          "minimum": 0,
+          "description": "How long (in milliseconds) the last line must be the ONLY line visible (or the first line the only thing at the top) before it switches tabs. Higher values make it feel less jarring. Set to 0 to switch the instant that state is reached."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.32.0"
+  }
+}
