@@ -1,5 +1,5 @@
 {
-  "name": "infinity-scroll",
+  "name": "vscode-infinity-scroll",
   "displayName": "Infinity Scroll",
   "description": "Scroll past the bottom of a file to jump into the next open tab, and past the top to jump back into the previous one - makes separate files feel like one continuous document.",
   "version": "0.1.0",

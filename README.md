@@ -18,16 +18,28 @@ before doing anything.
   scroll space. This is a state check, not a counter, so it doesn't matter
   whether you got there with one fast fling or several small nudges. Once
   that state has held continuously for the configured delay, it switches to
-  the next tab and places your cursor at its top.
-- **Top edge:** triggers when the first line comes back into view after
-  having been scrolled down (there's no blank space above line 1 for VS
-  Code to let you scroll into, so this edge uses a plain "you just arrived
-  back at the top" check instead). Same delay applies before it switches to
-  the previous tab.
-- Reaching either isolated/edge state cancels the pending switch immediately
-  if you scroll away from it before the delay elapses.
+  the next tab and lands you at the bottom of it, using VS Code's native
+  "reveal at bottom" behavior so it fills with however much real content
+  actually fits your window.
+- **Top edge:** requires a two-step confirmation. The first time you scroll
+  back up to the very top, it doesn't arm anything - instead it nudges the
+  view down by exactly one line (line 1 just slips out of view), as an "are
+  you sure?" gesture. Only a genuinely separate second return to the top -
+  at least a quarter second after the nudge, so residual momentum from the
+  same scroll can't immediately satisfy both steps - actually arms the
+  switch, held for the configured delay before it fires. An accidental
+  brush against the top edge won't do anything; you have to deliberately
+  return to it twice.
+- Reaching an edge state cancels any pending switch immediately if you
+  scroll away from it before the delay elapses.
 - If the neighboring tab isn't a text document (e.g. a terminal or webview
   tab), it skips over it to find the next one that is.
+- Whenever an auto-switch happens, the tab you're leaving gets its scroll
+  position reset back to normal (not left sitting at the exact edge that
+  triggered the switch) the moment it's next viewed - whether that's you
+  clicking back into it manually, or another auto-switch. This also resets
+  its "already bounced" state at the top edge, so a later return there
+  requires the two-step confirmation again too.
 - On activation, the extension silently turns on `editor.scrollBeyondLastLine`
   — without it there's no blank space below a short file to scroll the last
   line into isolation with, so the bottom edge could never be reached at
@@ -45,7 +57,7 @@ before doing anything.
 Or from the command line:
 
 ```bash
-code --install-extension infinity-scroll-0.1.0.vsix
+code --install-extension vscode-infinity-scroll-0.1.0.vsix
 ```
 
 ### Option B — run it from source (for tweaking the code)
@@ -73,10 +85,10 @@ Open Settings (`Ctrl+,`) and search "Infinity Scroll", or edit
   "infinityScroll.wrapAround": false,
 
   // How long (ms) the last line must be the only thing visible (or the
-  // first line the only thing at the top) before it actually switches tabs.
-  // This is the "make it less jarring" knob - a quick flick through won't
-  // trigger it, but pausing there will. Set to 0 to switch the instant that
-  // state is reached.
+  // first line the only thing at the top, on its second confirmed arrival)
+  // before it actually switches tabs. This is the "make it less jarring"
+  // knob - a quick flick through won't trigger it, but pausing there will.
+  // Set to 0 to switch the instant that state is reached.
   "infinityScroll.triggerDelayMs": 500
 }
 ```
